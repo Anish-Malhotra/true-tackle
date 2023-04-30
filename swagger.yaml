@@ -1,0 +1,549 @@
+openapi: 3.0.0
+info:
+  title: "Tackle.Io API"
+  description: "Tackle.Io API"
+  version: 1.0.0
+
+servers:
+  - url: "/v1"
+
+paths:
+  /vendors:
+    get:
+      tags:
+      - "Vendors"
+      summary: Retrieve all vendors as a paginated list
+      operationId: controllers.products.controllers.vendors.read_all
+      parameters:
+      - name: page
+        in: query
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        description: Number of records to return per page
+        schema:
+          type: integer
+          default: 20
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponseData'
+        400:
+          description: Bad request
+          content: {}
+    
+    post:
+      tags:
+      - "Vendors"
+      summary: Create a new vendor
+      operationId: controllers.products.controllers.vendors.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vendor'
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        405:
+          description: Invalid input
+          content: {}
+
+  /vendor/{vendor_id}:
+    get:
+      tags:
+      - "Vendors"
+      summary: Retrieve a vendor by Id
+      operationId: controllers.products.controllers.vendors.get_by_id
+      parameters:
+      - name: vendor_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    put:
+      tags:
+      - "Vendors"
+      summary: Update an existing vendor by Id
+      operationId: controllers.products.controllers.vendors.update
+      parameters:
+      - name: vendor_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Vendor'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    delete:
+      tags:
+      - "Vendors"
+      summary: Delete an existing vendor by Id
+      operationId: controllers.products.controllers.vendors.delete
+      parameters:
+      - name: vendor_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+
+  /products:
+    get:
+      tags:
+      - "Products"
+      summary: Retrieve all products as a paginated list
+      operationId: controllers.products.read_all
+      parameters:
+      - name: page
+        in: query
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        description: Number of records to return per page
+        schema:
+          type: integer
+          default: 20
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponseData'
+        400:
+          description: Bad request
+          content: {}
+    
+    post:
+      tags:
+      - "Products"
+      summary: Create a new product
+      operationId: controllers.products.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        405:
+          description: Invalid input
+          content: {}
+
+  /products/{product_id}:
+    get:
+      tags:
+      - "Products"
+      summary: Retrieve a product by Id
+      operationId: controllers.products.get_by_id
+      parameters:
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    put:
+      tags:
+      - "Products"
+      summary: Update an existing product by Id
+      operationId: controllers.products.update
+      parameters:
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    delete:
+      tags:
+      - "Products"
+      summary: Delete an existing product by Id
+      operationId: controllers.products.delete
+      parameters:
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+
+  /orders:
+    get:
+      tags:
+      - "Orders"
+      summary: Retrieve all orders as a paginated list
+      operationId: controllers.orders.read_all
+      parameters:
+      - name: product_id
+        in: query
+        description: Filter by product_id
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        description: Number of records to return per page
+        schema:
+          type: integer
+          default: 20
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponseData'
+        400:
+          description: Bad request
+          content: {}
+    
+    post:
+      tags:
+      - "Orders"
+      summary: Create a new order
+      operationId: controllers.orders.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        405:
+          description: Invalid input
+          content: {}
+
+  /orders/{order_id}:
+    get:
+      tags:
+      - "Orders"
+      summary: Retrieve an order by Id
+      operationId: controllers.orders.get_by_id
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    put:
+      tags:
+      - "Orders"
+      summary: Update an existing order by Id
+      operationId: controllers.orders.update
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+    
+    delete:
+      tags:
+      - "Orders"
+      summary: Delete an existing product by Id
+      operationId: controllers.orders.delete
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+
+components:
+  schemas:
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the vendor
+        created_at:
+          type: string
+          format: date
+          pattern: YYYY-MM-DD
+          description: The date the vendor was registered
+        name:
+          type: string
+          description: The name of the vendor
+      xml:
+        name: Vendor
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the product
+        vendor_id:
+          type: integer
+          format: int64
+          description: The ID of the vendor that owns the product
+        created_at:
+          type: string
+          format: date
+          pattern: YYYY-MM-DD
+          description: The date the product was created
+        title:
+          type: string
+          description: The name of the product
+        listing_type:
+          type: string
+          description: The type of the product listing
+          enum:
+          - ami
+          - saas
+      xml:
+        name: Product
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the order
+        product_id:
+          type: integer
+          format: int64
+          description: The ID of the product that belongs to the order
+        created_at:
+          type: string
+          format: date
+          pattern: YYYY-MM-DD
+          description: The date the product was created
+        full_name:
+          type: string
+          description: The full name of the person that placed the order
+        order_date:
+          type: string
+          format: date
+          pattern: YYYY-MM-DD
+          description: The date the order was placed
+      xml:
+        name: Order
+    
+    PaginatedResponseData:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+          description: Total amount of resource
+        count:
+          type: integer
+          format: int32
+          description: Count of the resources in the current response
+        page:
+          type: integer
+          format: int32
+          description: Page number
+        size:
+          type: integer
+          format: int32
+          description: Number of resource per page
+        resources:
+          type: array
+          format: int32
+          description: Resources
+          items:
+            type: object
+            properties: {}
+      example:
+        total: 10
+        size: 5
+        count: 5
+        resources:
+        - {}
+        - {}
+        - {}
+        - {}
+        - {}
+        page: 1
+      xml:
+        name: PaginatedResponseData
+  
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        default: 1
+    size:
+      name: size
+      in: query
+      description: Number of records to return per page
+      schema:
+        type: integer
+        default: 20
