@@ -5,6 +5,9 @@ from schemas import VendorSchema
 
 VendorSchema = VendorSchema()
 
+# Error handlers are bound to the Flask app
+# We need to throw the right exceptions in the 'model' classes, and Flask will handle the rest!
+
 def create(body: dict):
     vendor_data = Vendor.create(body)
     return VendorSchema.dump(vendor_data)

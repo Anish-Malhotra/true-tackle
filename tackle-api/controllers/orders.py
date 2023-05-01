@@ -5,6 +5,9 @@ from schemas import OrderSchema
 
 OrderSchema = OrderSchema()
 
+# Error handlers are bound to the Flask app
+# We need to throw the right exceptions in the 'model' classes, and Flask will handle the rest!
+
 def create(body: dict):
     order_data = Order.create(body)
     return OrderSchema.dump(order_data)

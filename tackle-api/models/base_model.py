@@ -2,7 +2,14 @@ from configuration import db
 from sqlalchemy import exc
 from errors import DataNotFoundException, SqlException, InvalidInputException
 
+"""
+Base class for all SQLAlchemy DAO classes
 
+Although SQLAlchemy doesn't support inheritance (requiring a valid table name when inherting from db.Model),
+all of the CRUD operations are implemented in this base class as a way to reuse code
+
+The actual DAO classes inherit from both BaseModel and db.Model, since they are 1:1 with database tables
+"""
 class BaseModel:
     def __init__(self, **kwargs):
         for key, value in kwargs.items():

@@ -5,6 +5,9 @@ from schemas import ProductSchema
 
 ProductSchema = ProductSchema()
 
+# Error handlers are bound to the Flask app
+# We need to throw the right exceptions in the 'model' classes, and Flask will handle the rest!
+
 def create(body: dict):
     product_data = Product.create(body)
     return ProductSchema.dump(product_data)
