@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from configuration import db
-from errors import OrderNotFoundException
+from errors import DataNotFoundException, SqlException, InvalidInputException
 
 class Order(db.Model):
     __tablename__ = 'order'
@@ -19,49 +19,72 @@ class Order(db.Model):
         self.created_at = datetime.utcnow()
 
     def __repr__(self):
-        return "<Order('%d', '%s')>" % (self.id, self.full_name)
+        return "<Order('%s', '%d', '%s', '%s')>" % (self.full_name, self.product_id, self.order_date, self.created_at)
     
-    def json(self):
+    def json(self) -> dict:
         return {
             'id':self.id,
             'product_id': self.product_id,
             'full_name': self.full_name,
             'order_date': self.order_date,
-            'created_at': self.created_at
+            'created_at': self.created_at,
         }
         
-    def save(self):
+    def save(self) -> None:
         db.session.add(self)
         db.session.commit()
         
     @classmethod
     def from_obj(cls, obj) -> "Order":
-        return cls(**obj)
+        order = cls(**obj)
+        order.order_date = datetime.strptime(order.order_date, "%Y-%m-%d").date()
+        order.created_at = date.today()
+        return order
     
     @classmethod
     def get_by_id(cls, id) -> dict:
         res = cls.query.filter_by(id=id).first()
         if not res:
-            raise OrderNotFoundException(id=id)
+            raise DataNotFoundException(id=id, resource_type=cls.__tablename__)
         return res.json()
         
     @classmethod
     def create(cls, body: dict) -> dict:
-        cls.from_obj(body).save()
-        return body
+        try:
+            res = cls.from_obj(body)
+            res.save()
+            return res.json()
+        except ValueError as exc:
+            raise InvalidInputException(exc, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+        except exc.SqlAlchemyError as exc:
+            raise SqlException(exc, resource_type=cls.__tablename__)
     
     @classmethod
     def update(cls, id: int, body: dict) -> dict:
-        res = cls.query.filter_by(id=id).first_or_404()
-        cls.from_obj(body).save()
-        return body
+        res = cls.query.filter_by(id=id).first()
+        if not res:
+            raise DataNotFoundException(id=id, resource_type=cls.__tablename__)
+        try:
+            for key, value in body.items():
+                setattr(res, key, value)
+            res.save()
+            return res.json()
+        except ValueError as exc:
+            raise InvalidInputException(exc, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+        except exc.SqlAlchemyError as exc:
+            raise SqlException(exc, resource_type=cls.__tablename__)
         
     @classmethod
     def delete(cls, id: int) -> dict:
-        res = cls.query.filter_by(id=id).first_or_404()
-        db.session.delete(res)
-        db.session.commit()
-        return res.json()
+        res = cls.query.filter_by(id=id).first()
+        if not res:
+            raise DataNotFoundException(id=id, resource_type=cls.__tablename__)
+        try:
+            db.session.delete(res)
+            db.session.commit()
+            return res.json()
+        except exc.SqlAlchemyError as exc:
+            raise SqlException(exc, resource_type=cls.__tablename__)
     
     """
     @classmethod

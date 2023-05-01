@@ -2,14 +2,16 @@ import connexion
 
 from flask_cors import CORS
 from swagger_ui_bundle import swagger_ui_3_path
-from errors import not_found_handler
-from errors import DataNotFoundException
+from errors import *
 
 from configuration import db, ma
 
 
 def register_error_handlers(app):
     app.add_error_handler(DataNotFoundException, not_found_handler)
+    app.add_error_handler(SqlException, sql_exception_handler)
+    app.add_error_handler(InvalidInputException, invalid_input_handler)
+    app.add_error_handler(SerializationException, serialization_exception_handler)
 
 
 options = {"swagger_path": swagger_ui_3_path}
