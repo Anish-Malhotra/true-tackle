@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from config import db
+from configuration import db
 
 class Product(db.Model):
     __tablename__ = 'product'

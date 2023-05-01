@@ -1,4 +1,4 @@
-from config import ma
+from configuration import ma
 from models import Product
 
 
