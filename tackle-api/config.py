@@ -5,6 +5,8 @@ from swagger_ui_bundle import swagger_ui_3_path
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
+from flask_marshmallow import Marshmallow
+
 
 options = {"swagger_path": swagger_ui_3_path}
 
@@ -19,3 +21,4 @@ flask_app.config.from_pyfile('db_config.py')
 CORS(flask_app)
 
 db = SQLAlchemy(flask_app)
+ma = Marshmallow()
