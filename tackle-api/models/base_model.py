@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from configuration import db
 from sqlalchemy import exc
 from errors import DataNotFoundException, SqlException, InvalidInputException
@@ -66,21 +64,25 @@ class BaseModel:
         except exc.SQLAlchemyError as e:
             raise SqlException(e, resource_type=cls.__tablename__)
     
-    """
     @classmethod
     def read_all(
         cls,
         page: int = 1,
         size: int = 20,
-    ) -> models.PaginatedResponseData:
-        query = cls.query.paginate(page, size, False)
+        filter_options: dict = {}
+    ) -> dict:
+        if len(filter_options.keys()) > 0:
+            query = cls.query.filter_by(**filter_options).paginate(page, size, False)
+        else:
+            query = cls.query.paginate(page, size, False)
         total = query.total
         items = query.items
-        return models.PaginatedResponseData(
-            page=page,
-            size=size,
-            total=total,
-            count=len(items),
-            resources=[i.to_obj() for i in items],
-        )
-    """
+        return {
+            "page": page,
+            "page_size": size,
+            "total": total,
+            "count": len(items),
+            "resource_type": cls.__tablename__,
+            "resources": [i.json() for i in items],
+        }
+    

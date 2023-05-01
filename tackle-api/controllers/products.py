@@ -10,7 +10,8 @@ def create(body: dict):
     return ProductSchema.dump(product_data)
 
 def read_all(page, size):
-    pass
+    products_data = Product.read_all(page, size)
+    return products_data
 
 def get_by_id(product_id: int):
     product_data = Product.get_by_id(product_id)

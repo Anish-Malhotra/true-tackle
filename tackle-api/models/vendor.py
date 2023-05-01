@@ -27,7 +27,7 @@ class Vendor(db.Model, BaseModel):
         }
         
     @classmethod
-    def from_obj(cls, obj) -> object:
+    def from_obj(cls, obj) -> "Vendor":
         vendor = cls(**obj)
         return vendor
 

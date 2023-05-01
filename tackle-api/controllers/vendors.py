@@ -9,8 +9,9 @@ def create(body: dict):
     vendor_data = Vendor.create(body)
     return VendorSchema.dump(vendor_data)
 
-def read_all(vendor_id, page, size):
-    pass
+def read_all(page, size):
+    vendors_data = Vendor.read_all(page, size)
+    return vendors_data
 
 def get_by_id(vendor_id: int):
     vendor_data = Vendor.get_by_id(vendor_id)

@@ -9,8 +9,13 @@ def create(body: dict):
     order_data = Order.create(body)
     return OrderSchema.dump(order_data)
 
-def read_all(product_id, page, size):
-    pass
+def read_all(page, size, product_id = None):
+    filter_options = {}
+    if product_id:
+        filter_options["product_id"] = product_id
+    
+    orders_data = Order.read_all(page, size, filter_options)
+    return orders_data
 
 def get_by_id(order_id: int):
     order_data = Order.get_by_id(order_id)
