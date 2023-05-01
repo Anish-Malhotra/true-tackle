@@ -13,7 +13,6 @@ def create(body: dict):
     return ProductSchema.dump(product_data)
 
 def read_all(page: int, size: int):
-    print(f'page: {page}, size: {size}')
     products_data = Product.read_all(page, size)
     return products_data
 

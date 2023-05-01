@@ -21,3 +21,7 @@ export interface Vendor {
     created_at: string;
     name: number;
 }
+
+export interface Revenue {
+    amount: number;
+}

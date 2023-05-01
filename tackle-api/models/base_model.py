@@ -78,7 +78,6 @@ class BaseModel:
         size: int,
         filter_options: dict = {}
     ) -> dict:
-        print(f'page: {page}, size: {size}')
         if len(filter_options.keys()) > 0:
             query = cls.query.filter_by(**filter_options).paginate(page=page, per_page=size, error_out=False)
         else:

@@ -15,23 +15,26 @@ export const fetcher = <T>({
   queryKey,
   pageParam,
 }: QueryFunctionContext<QueryKeyT>): Promise<T> => {
-  const [url, size] = queryKey;
-  console.log(`page: ${pageParam}`)
-  console.log(`size: ${size}`)
-  const urlWithQueryKeys = `${url}?page=${pageParam}&size=${size}`;
+  const [url, params, size] = queryKey;
+  let urlWithQueryKeys = `${url}?page=${pageParam}&size=${size}`;
+
+  _.forEach(params, (value, key) => {
+    urlWithQueryKeys = urlWithQueryKeys.concat(`&${key}=${value}`);
+  })
+  
   return api
     .get<T>(urlWithQueryKeys)
     .then((res) => res.data);
 };
 
-export const useLoadMore = <T>(url: string | null, size = 1) => {
+export const useLoadMore = <T>(url: string | null, size = DEFAULT_PAGE_SIZE, params? = {}) => {
   const context = useInfiniteQuery<
     PaginationInterface<T>,
     Error,
     PaginationInterface<T>,
     QueryKeyT
   >(
-    [url!, size!],
+    [url!, params!, size!],
     ({ queryKey, pageParam = 1 }) => fetcher({ queryKey, pageParam }),
     {
       getPreviousPageParam: (firstPage) => firstPage.previous_id ?? false,

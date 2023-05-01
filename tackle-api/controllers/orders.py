@@ -32,3 +32,7 @@ def update(order_id: int, body: dict):
 def delete(order_id):
     order_data = Order.delete(order_id)
     return OrderSchema.dump(order_data)
+
+def revenue():
+    revenue_data = Order.get_total_revenue()
+    return {"amount": revenue_data}

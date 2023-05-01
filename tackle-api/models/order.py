@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from . import BaseModel
+from sqlalchemy import func
+
+from . import BaseModel, Product
 from configuration import db
 
 
@@ -37,4 +39,13 @@ class Order(db.Model, BaseModel):
         order = cls(**obj)
         order.order_date = datetime.strptime(order.order_date, "%Y-%m-%d").date()
         return order
+    
+    @classmethod
+    def get_total_revenue(cls) -> int:
+        res = cls.query.\
+                    with_entities(Product.price, func.sum(Order.quantity)).\
+                    join(Product).filter(Product.id == Order.product_id).\
+                    group_by(Order.product_id).all()
+                    
+        return sum(r[0] * r[1] for r in res)
         

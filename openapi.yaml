@@ -420,6 +420,24 @@ paths:
           description: Resource not found
           content: {}
 
+  /orders/revenue:
+    get:
+      tags:
+      - "Orders"
+      summary: Retrieve total order revenue
+      operationId: controllers.orders.revenue
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                format: '#/components/schemas/Revenue'
+        400:
+          description: Bad request
+          content: {}
+    
+
 components:
   schemas:
     Vendor:
@@ -532,6 +550,16 @@ components:
       xml:
         name: PaginatedResponseData
   
+    Revenue:
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int64
+          description: Amount of revenue
+      xml:
+        name: Revenue
+
   parameters:
     page:
       name: page
