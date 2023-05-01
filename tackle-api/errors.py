@@ -36,7 +36,7 @@ def not_found_handler(error):
 
 def sql_exception_handler(error):
     return {
-        "detail": str(error),
+        "detail": error.__repr__(),
         "status": 500,
         "resource_type": error.resource_type,
     }, 500

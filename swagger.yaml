@@ -60,7 +60,7 @@ paths:
           description: Invalid input
           content: {}
 
-  /vendor/{vendor_id}:
+  /vendors/{vendor_id}:
     get:
       tags:
       - "Vendors"

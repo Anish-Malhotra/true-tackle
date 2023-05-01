@@ -1,7 +1,9 @@
 from datetime import date, datetime
 
 from configuration import db
+from sqlalchemy import exc
 from errors import DataNotFoundException, SqlException, InvalidInputException
+
 
 class Order(db.Model):
     __tablename__ = 'order'
@@ -23,7 +25,7 @@ class Order(db.Model):
     
     def json(self) -> dict:
         return {
-            'id':self.id,
+            'id': self.id,
             'product_id': self.product_id,
             'full_name': self.full_name,
             'order_date': self.order_date,
@@ -54,10 +56,10 @@ class Order(db.Model):
             res = cls.from_obj(body)
             res.save()
             return res.json()
-        except ValueError as exc:
-            raise InvalidInputException(exc, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
-        except exc.SqlAlchemyError as exc:
-            raise SqlException(exc, resource_type=cls.__tablename__)
+        except ValueError as e:
+            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+        except exc.SQLAlchemyError as e:
+            raise SqlException(e, resource_type=cls.__tablename__)
     
     @classmethod
     def update(cls, id: int, body: dict) -> dict:
@@ -69,10 +71,10 @@ class Order(db.Model):
                 setattr(res, key, value)
             res.save()
             return res.json()
-        except ValueError as exc:
-            raise InvalidInputException(exc, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
-        except exc.SqlAlchemyError as exc:
-            raise SqlException(exc, resource_type=cls.__tablename__)
+        except ValueError as e:
+            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+        except exc.SQLAlchemyError as e:
+            raise SqlException(e, resource_type=cls.__tablename__)
         
     @classmethod
     def delete(cls, id: int) -> dict:
@@ -83,8 +85,8 @@ class Order(db.Model):
             db.session.delete(res)
             db.session.commit()
             return res.json()
-        except exc.SqlAlchemyError as exc:
-            raise SqlException(exc, resource_type=cls.__tablename__)
+        except exc.SQLAlchemyError as e:
+            raise SqlException(e, resource_type=cls.__tablename__)
     
     """
     @classmethod
