@@ -325,7 +325,7 @@ paths:
               $ref: '#/components/schemas/Order'
         required: true
       responses:
-        204:
+        200:
           description: Created
           content: {}
         400:
@@ -333,6 +333,9 @@ paths:
           content: {}
         405:
           description: Invalid input
+          content: {}
+        500:
+          description: Internal server error
           content: {}
 
   /orders/{order_id}:
@@ -394,7 +397,7 @@ paths:
     delete:
       tags:
       - "Orders"
-      summary: Delete an existing product by Id
+      summary: Delete an existing order by Id
       operationId: controllers.orders.delete
       parameters:
       - name: order_id
@@ -487,6 +490,10 @@ components:
           type: string
           format: date
           description: The date the order was placed
+        quantity:
+          type: integer
+          format: int32
+          description: The quantity of the product that was ordered
       xml:
         name: Order
     

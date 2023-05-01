@@ -13,13 +13,14 @@ class Order(db.Model, BaseModel):
 
     full_name = db.Column(u'full_name', db.VARCHAR(length=128), nullable=False)
     order_date = db.Column(u'order_date', db.DATE(), nullable=False)
+    quantity = db.Column(u'quantity', db.INTEGER(), nullable=False)
     
     def __init__(self, **kwargs):
         super(Order, self).__init__(**kwargs)
         self.created_at = datetime.utcnow()
 
     def __repr__(self):
-        return "<Order('%s', '%d', '%s', '%s')>" % (self.full_name, self.product_id, self.order_date, self.created_at)
+        return "<Order('%s', '%d', '%d', '%s', '%s')>" % (self.full_name, self.product_id, self.quantity, self.order_date, self.created_at)
     
     def json(self) -> dict:
         return {
@@ -28,6 +29,7 @@ class Order(db.Model, BaseModel):
             'full_name': self.full_name,
             'order_date': self.order_date,
             'created_at': self.created_at,
+            'quantity': self.quantity,
         }
         
     @classmethod

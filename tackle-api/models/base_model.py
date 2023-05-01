@@ -33,7 +33,7 @@ class BaseModel:
             res.save()
             return res.json()
         except ValueError as e:
-            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(e.__traceback__)
         except exc.SQLAlchemyError as e:
             raise SqlException(e, resource_type=cls.__tablename__)
     
@@ -48,7 +48,7 @@ class BaseModel:
             res.save()
             return res.json()
         except ValueError as e:
-            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(exc.__traceback__)
+            raise InvalidInputException(e, resource_type=cls.__tablename__).with_traceback(e.__traceback__)
         except exc.SQLAlchemyError as e:
             raise SqlException(e, resource_type=cls.__tablename__)
         
