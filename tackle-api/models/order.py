@@ -40,7 +40,6 @@ class Order(db.Model):
     def from_obj(cls, obj) -> "Order":
         order = cls(**obj)
         order.order_date = datetime.strptime(order.order_date, "%Y-%m-%d").date()
-        order.created_at = date.today()
         return order
     
     @classmethod

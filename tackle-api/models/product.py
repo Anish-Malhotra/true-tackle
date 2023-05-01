@@ -41,7 +41,6 @@ class Product(db.Model):
     @classmethod
     def from_obj(cls, obj) -> "Product":
         product = cls(**obj)
-        product.created_at = date.today()
         return product
     
     @classmethod

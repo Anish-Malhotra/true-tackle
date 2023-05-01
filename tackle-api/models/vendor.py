@@ -35,7 +35,6 @@ class Vendor(db.Model):
     @classmethod
     def from_obj(cls, obj) -> "Vendor":
         vendor = cls(**obj)
-        vendor.created_at = date.today()
         return vendor
     
     @classmethod
