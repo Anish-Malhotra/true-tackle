@@ -1,5 +1,18 @@
-import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+//import { ReactQueryDevtools } from "react-query-devtools";
+import ProductsList from "./components/ProductsList";
 
-const App = () => <div>Welcome to the Tackle Take Home Project Client!</div>;
+const queryClient = new QueryClient({});
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+     
+
+      <ProductsList />
+
+    </QueryClientProvider>
+  );
+};
 
 export default App;
