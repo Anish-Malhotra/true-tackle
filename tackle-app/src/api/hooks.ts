@@ -10,14 +10,19 @@ import {
 } from '../interfaces/interfaces';
 import { pathToUrl } from '../util/router';
   
-export const useGetOrdersList = (product_id: number | null) =>
+export const useGetOrdersList = (product_id: number | null, size?: number) =>
     useLoadMore<Order[]>(
-        product_id ? pathToUrl(apiRoutes.getProductsList, { product_id }) : apiRoutes.getOrdersList
+        product_id ? pathToUrl(apiRoutes.getProductsList, { product_id }) : apiRoutes.getOrdersList,
+        size!,
     );
 
-export const useGetProductsList = () => useLoadMore<Product[]>(apiRoutes.getProductsList);
+export const useGetProductsList = (page?: number | null, size?: number) => 
+    useLoadMore<Product[]>(
+        apiRoutes.getProductsList,
+        size!,
+    );
 
-export const useGetVendorsList = () => useLoadMore<Vendor[]>(apiRoutes.getVendorsList);
+export const useGetVendorsList = () => useLoadMore<Vendor[]>(apiRoutes.getVendorsList, 1);
 
 export const useGetOrder = (id: number | null) => 
     useFetch<Order>(

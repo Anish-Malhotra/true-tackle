@@ -74,22 +74,27 @@ class BaseModel:
     @classmethod
     def read_all(
         cls,
-        page: int = 1,
-        size: int = 20,
+        page: int,
+        size: int,
         filter_options: dict = {}
     ) -> dict:
+        print(f'page: {page}, size: {size}')
         if len(filter_options.keys()) > 0:
-            query = cls.query.filter_by(**filter_options).paginate(page, size, False)
+            query = cls.query.filter_by(**filter_options).paginate(page=page, per_page=size, error_out=False)
         else:
-            query = cls.query.paginate(page, size, False)
+            query = cls.query.paginate(page=page, per_page=size, error_out=False)
         total = query.total
         items = query.items
-        return {
-            "page": page,
-            "page_size": size,
-            "total": total,
-            "count": len(items),
-            "resource_type": cls.__tablename__,
-            "resources": [i.json() for i in items],
+        
+        page_data = {
+            "count": total,
+            "data": [i.json() for i in items]
         }
+        
+        if page * size < total:
+            page_data["next_id"] = page + 1
+        if page > 1:
+            page_data["prev_id"] = page - 1
+        
+        return page_data
     

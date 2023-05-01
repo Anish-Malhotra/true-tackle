@@ -13,17 +13,14 @@ class TestOrder:
         assert isinstance(data, dict)
         
         assert 'count' in data and data['count'] == 6
-        assert 'total' in data and data['total'] == 6
-        assert data['count'] == data['total']
-        assert 'page' in data and data['page'] == 1
-        assert 'page_size' in data and data['page_size'] == 20
+        assert 'prev_id' not in data
+        assert 'next_id' not in data
         
-        assert 'resource_type' in data and data['resource_type'] == "order"
-        assert 'resources' in data and type(data['resources']) == list
+        assert 'data' in data and type(data['data']) == list
         
-        assert len(data['resources']) == data['count'] and len(data['resources']) == 6
+        assert len(data['data']) == data['count'] and len(data['data']) == 6
         
-        for resource in data['resources']:
+        for resource in data['data']:
             assert resource is not None
             assert isinstance(resource, dict)
             
@@ -45,17 +42,14 @@ class TestOrder:
         assert isinstance(data, dict)
         
         assert 'count' in data and data['count'] == 2
-        assert 'total' in data and data['total'] == 2
-        assert data['count'] == data['total']
-        assert 'page' in data and data['page'] == 1
-        assert 'page_size' in data and data['page_size'] == 20
+        assert 'prev_id' not in data
+        assert 'next_id' not in data
         
-        assert 'resource_type' in data and data['resource_type'] == "order"
-        assert 'resources' in data and type(data['resources']) == list
+        assert 'data' in data and type(data['data']) == list
         
-        assert len(data['resources']) == data['count'] and len(data['resources']) == 2
+        assert len(data['data']) == data['count'] and len(data['data']) == 2
         
-        for resource in data['resources']:
+        for resource in data['data']:
             assert resource is not None
             assert isinstance(resource, dict)
             

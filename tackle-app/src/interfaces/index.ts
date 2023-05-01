@@ -1,6 +1,6 @@
 export interface PaginationInterface<T> {
-    nextId?: number;
-    previousId?: number;
+    next_id?: number;
+    prev_id?: number;
     data: T;
     count: number;
   }

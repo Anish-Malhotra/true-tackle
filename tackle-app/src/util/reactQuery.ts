@@ -13,28 +13,30 @@ type QueryKeyT = [string, object | undefined];
 
 export const fetcher = <T>({
   queryKey,
-  page,
-  size,
+  pageParam,
 }: QueryFunctionContext<QueryKeyT>): Promise<T> => {
-  const [url, params] = queryKey;
+  const [url, size] = queryKey;
+  console.log(`page: ${pageParam}`)
+  console.log(`size: ${size}`)
+  const urlWithQueryKeys = `${url}?page=${pageParam}&size=${size}`;
   return api
-    .get<T>(url, { params: { ...params, page, size } })
-    .then((res: { data: any; }) => res.data);
+    .get<T>(urlWithQueryKeys)
+    .then((res) => res.data);
 };
 
-export const useLoadMore = <T>(url: string | null, params?: object) => {
+export const useLoadMore = <T>(url: string | null, size = 1) => {
   const context = useInfiniteQuery<
     PaginationInterface<T>,
     Error,
     PaginationInterface<T>,
     QueryKeyT
   >(
-    [url!, params],
-    ({ queryKey, page = 1, size = 20 }) => fetcher({ queryKey, page, size }),
+    [url!, size!],
+    ({ queryKey, pageParam = 1 }) => fetcher({ queryKey, pageParam }),
     {
-      getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
+      getPreviousPageParam: (firstPage) => firstPage.previous_id ?? false,
       getNextPageParam: (lastPage) => {
-        return lastPage.nextId ?? false;
+        return lastPage.next_id;
       },
     }
   );
