@@ -13,7 +13,7 @@ paths:
       tags:
       - "Vendors"
       summary: Retrieve all vendors as a paginated list
-      operationId: controllers.products.controllers.vendors.read_all
+      operationId: controllers.vendors.read_all
       parameters:
       - name: page
         in: query
@@ -42,7 +42,7 @@ paths:
       tags:
       - "Vendors"
       summary: Create a new vendor
-      operationId: controllers.products.controllers.vendors.create
+      operationId: controllers.vendors.create
       requestBody:
         content:
           application/json:
@@ -65,7 +65,7 @@ paths:
       tags:
       - "Vendors"
       summary: Retrieve a vendor by Id
-      operationId: controllers.products.controllers.vendors.get_by_id
+      operationId: controllers.vendors.get_by_id
       parameters:
       - name: vendor_id
         in: path
@@ -91,7 +91,7 @@ paths:
       tags:
       - "Vendors"
       summary: Update an existing vendor by Id
-      operationId: controllers.products.controllers.vendors.update
+      operationId: controllers.vendors.update
       parameters:
       - name: vendor_id
         in: path
@@ -120,7 +120,7 @@ paths:
       tags:
       - "Vendors"
       summary: Delete an existing vendor by Id
-      operationId: controllers.products.controllers.vendors.delete
+      operationId: controllers.vendors.delete
       parameters:
       - name: vendor_id
         in: path
