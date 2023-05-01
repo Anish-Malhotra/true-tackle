@@ -8,6 +8,7 @@ import {
 } from 'react-query';
 import { QueryFunctionContext } from 'react-query/types/core/types';
 import { PaginationInterface } from '../interfaces';
+import { DEFAULT_PAGE_SIZE } from '../routes';
 
 type QueryKeyT = [string, object | undefined];
 
@@ -21,7 +22,7 @@ export const fetcher = <T>({
   _.forEach(params, (value, key) => {
     urlWithQueryKeys = urlWithQueryKeys.concat(`&${key}=${value}`);
   })
-  
+
   return api
     .get<T>(urlWithQueryKeys)
     .then((res) => res.data);
